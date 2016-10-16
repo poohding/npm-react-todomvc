@@ -1,0 +1,16 @@
+doctype html
+html(lang="en" data-framework="react")
+    head
+        meta(charset="utf-8")
+        title React • TodoMVC
+        link(rel="shortcut icon", href="../favicon.ico")
+        link(rel="stylesheet",href="../#{locals['dist/css/app.css'] ? locals['dist/css/app.css'].substr(5) : 'app.min.css'}")
+        script(src="//localhost:9091/livereload.js")
+    body
+        section.todoapp
+        footer.info
+            p Double-click to edit a todo
+            p Created by #[a(href="http://github.com/petehunt/") petehunt]
+            p Part of #[a(href="http://todomvc.com") TodoMVC]
+        script(src="../#{locals['dist/js/app.js'] ? locals['dist/js/app.js'].substr(5) : 'app.min.js'}")
+

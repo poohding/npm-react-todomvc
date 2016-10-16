@@ -1,0 +1,92 @@
+{
+  "name": "npm-react-todomvc",
+  "version": "0.0.0",
+  "description": "React TodoMVC Example",
+  "main": "dist/src/app.js",
+  "scripts": {
+    "clean": "rimraf dist/ && mkdirp dist/{js,css,html} && copyfiles favicon.ico dist",
+    "autoprefixer": "postcss -u autoprefixer -r dist/css/*.css",
+    "scss": "node-sass --output-style expanded --source-map=true -o dist/css src/scss",
+
+    "prebuild": "npm run clean && npm test",
+    "build:js": "browserify src/js/app.jsx --standalone app --transform babelify --debug -p [minifyify --no-map] > dist/js/app.js",
+    "build:css": "npm run scss && postcss -u autoprefixer -r < dist/css/app.css | postcss -u cssnano > dist/css/app.min.css",
+    "build:html": "jade src/jade/index.jade --pretty --out dist/html/",
+    "build": "npm-run-all --sequential build:*",
+
+    "predev": "npm run clean",
+    "dev:js": "browserify src/js/app.jsx --standalone app --transform babelify --debug | hashmark -n dist/js/app.js -s -l 8 -m dist/assets.json \"dist/js/{name}.{hash}{ext}\"",
+    "postdev:js": "jade src/jade/index.jade --pretty --obj dist/assets.json --out dist/html/",
+    "dev:css": "npm run scss && npm run autoprefixer && hashmark -s -l 8 -m dist/assets.json dist/css/app.css \"dist/css/{name}.{hash}{ext}\"",
+    "postdev:css": "jade src/jade/index.jade --pretty --obj dist/assets.json --out dist/html/",
+    "dev": "npm run dev:js && npm run dev:css",
+
+    "open": "opener http://localhost:9090/html/#/",
+    "live-reload": "live-reload --port 9091 dist/html/",
+    "serve": "http-server -p 9090 dist/",
+
+    "watch:css": "onchange \"src/scss\" -- npm run dev:css",
+    "watch:js": "onchange \"src/js\" -- npm run dev:js",
+    "watch": "npm-run-all --parallel watch:*",
+
+    "start": "npm run live-reload & npm run open && npm run serve & npm run watch",
+
+    "pretest": "eslint src/js test --ext=jsx --ext=js",
+    "test:debug": "karma start karma-debug.conf.js",
+    "test": "karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poohding/npm-react-todomvc.git"
+  },
+  "author": "poohding",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/poohding/npm-react-todomvc/issues"
+  },
+  "homepage": "https://github.com/poohding/npm-react-todomvc#readme",
+  "dependencies": {
+    "classnames": "^2.1.5",
+    "director": "^1.2.0",
+    "npm-run-all": "^3.1.1",
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
+    "react-es6-component": "0.0.4",
+    "todomvc-app-css": "^2.0.0",
+    "todomvc-common": "^1.0.1",
+    "watch-run": "^1.2.4"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.5.1",
+    "babel": "^5.8.23",
+    "babelify": "^6.3.0",
+    "browserify": "^11.2.0",
+    "copyfiles": "^1.0.0",
+    "cssnano": "^3.7.7",
+    "eslint": "^1.6.0",
+    "hashmark": "^4.1.0",
+    "http-server": "^0.9.0",
+    "jade": "^1.11.0",
+    "karma": "^0.13.10",
+    "karma-browserify": "^4.4.0",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-cli": "^0.1.1",
+    "karma-mocha": "^0.2.0",
+    "live-reload": "^1.1.0",
+    "minifyify": "^7.3.3",
+    "mkdirp": "^0.5.1",
+    "mocha": "^2.3.3",
+    "node-sass": "^3.10.1",
+    "onchange": "^3.0.2",
+    "opener": "^1.4.2",
+    "parallelshell": "^2.0.0",
+    "postcss-cli": "^2.6.0",
+    "rimraf": "^2.5.4",
+    "sinon": "^1.17.2",
+    "teaspoon": "^5.0.1",
+    "uglifyify": "^3.0.4",
+    "unexpected": "^10.0.1",
+    "unexpected-react-shallow": "^0.7.0",
+    "watch-run": "^1.2.4"
+  }
+}
